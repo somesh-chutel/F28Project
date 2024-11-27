@@ -13,7 +13,8 @@ const Jobs = ()=> {
 
     const [allValues,setValues] = useState({
 
-        userList : []
+        userList : [],
+        userInput : ""
 
     });
 
@@ -21,7 +22,7 @@ const Jobs = ()=> {
 
         const fetchUserData = async()=>{
 
-            const api = "https://apis.ccbp.in/jobs";
+            const api = `https://apis.ccbp.in/jobs?employment_type=&minimum_package=&search=${allValues.userInput}`;
 
             const options = {
                 method : "Get",
@@ -55,7 +56,18 @@ const Jobs = ()=> {
 
         fetchUserData();
 
-    },[]);
+    },[allValues.userInput]);
+
+
+    const onGetUserIn = (e)=>{
+
+        if( e.key === "Enter"){
+
+            setValues({...allValues,userInput : e.target.value});
+
+        }
+
+    }
 
 
     return (
@@ -69,17 +81,20 @@ const Jobs = ()=> {
                 <div className='row'>
 
 
-                            <div className='col-5 filter-cont'>
+                            <div className='col-5 filter-cont p-4'>
                                 <FilterSec/>
                             </div>
 
-                            <ul className = "col-7 all-jobs-cont p-4">
+                            <div className='col-7 all-jobs-cont p-4 d-flex flex-column align-items-center'>
+                            <input onKeyUp={onGetUserIn} type="search" className='form-control w-75 border-primary'/>
+                            <ul className = "p-4">
 
                                     {
                                         allValues.userList.map( each => <DisplayAllJobs userDetails = {each} key = {each.id}/>)
                                     }
 
                             </ul>
+                            </div>
 
 
                 </div>
