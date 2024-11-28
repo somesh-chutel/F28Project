@@ -14,7 +14,9 @@ const Jobs = ()=> {
     const [allValues,setValues] = useState({
 
         userList : [],
-        userInput : ""
+        userInput : "",
+        emptyList : [],
+        minPackage : ""
 
     });
 
@@ -22,7 +24,9 @@ const Jobs = ()=> {
 
         const fetchUserData = async()=>{
 
-            const api = `https://apis.ccbp.in/jobs?employment_type=&minimum_package=&search=${allValues.userInput}`;
+            console.log(allValues.emptyList);
+
+            const api = `https://apis.ccbp.in/jobs?employment_type=${allValues.emptyList}&minimum_package=${allValues.minPackage}&search=${allValues.userInput}`;
 
             const options = {
                 method : "Get",
@@ -56,7 +60,7 @@ const Jobs = ()=> {
 
         fetchUserData();
 
-    },[allValues.userInput]);
+    },[allValues.userInput,allValues.emptyList]);
 
 
     const onGetUserIn = (e)=>{
@@ -66,6 +70,22 @@ const Jobs = ()=> {
             setValues({...allValues,userInput : e.target.value});
 
         }
+
+    }
+
+    const onChangeEmpList = (value,isChecked)=>{
+
+        if( isChecked === true ){
+
+            setValues({...allValues,emptyList : [...allValues.emptyList,value]});
+
+        }
+        else{
+
+            setValues({...allValues,emptyList : allValues.emptyList.filter(each=> each !== value)});
+
+        }
+
 
     }
 
@@ -82,7 +102,7 @@ const Jobs = ()=> {
 
 
                             <div className='col-5 filter-cont p-4'>
-                                <FilterSec/>
+                                <FilterSec anonymousFunc = {onChangeEmpList}/>
                             </div>
 
                             <div className='col-7 all-jobs-cont p-4 d-flex flex-column align-items-center'>

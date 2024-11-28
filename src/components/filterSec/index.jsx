@@ -43,8 +43,9 @@ const salaryRangesList = [
   },
 ]
 
-const FilterSec = () => {
+const FilterSec = (props) => {
 
+  const {anonymousFunc} = props;
 
 const [allValues,setvalue] = useState({
     profileDetails:{}
@@ -78,6 +79,15 @@ const token = Cookies.get("jwtToken");
  
 
   const renderEmploymentTypesList = () => {
+
+    const onChangeEmptype = (e)=>{
+
+      // console.log();
+
+      anonymousFunc(e.target.value, e.target.checked);
+
+    }
+
     
     return employmentTypesList.map(eachType => {
 
@@ -88,6 +98,7 @@ const token = Cookies.get("jwtToken");
             className="checkbox-input"
             value={eachType.employmentTypeId}
             id={eachType.employmentTypeId}
+            onChange={onChangeEmptype}
           />
           <label htmlFor={eachType.employmentTypeId} className="filter-label">
             {eachType.label}
